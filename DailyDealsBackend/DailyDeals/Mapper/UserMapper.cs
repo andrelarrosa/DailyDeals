@@ -14,4 +14,10 @@ public class UserMapper
         user.Password = userDto.Password;
         return user;
     }
+
+    public UserDto toDto(User user)
+    {
+        UserDto userDto = new UserDto(user.Cpf, user.Email, user.Name, user.Password);
+        return userDto;
+    }
 }

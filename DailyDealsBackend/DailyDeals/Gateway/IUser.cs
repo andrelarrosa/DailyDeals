@@ -4,5 +4,6 @@ namespace DailyDeals.Gateway;
 
 public interface IUser
 {
-    void createUser(UserDto userDto);
+    Task CreateUser(UserDto userDto);
+    Task<List<UserDto>> GetAllUsers();
 }

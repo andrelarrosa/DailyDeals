@@ -23,13 +23,27 @@ public class UserController : ControllerBase
     {
         try
         {
-            _user.createUser(userDto);
+            _user.CreateUser(userDto);
             return Ok("User created successfully");
         }
         catch (Exception e)
         {
             return StatusCode((int) HttpStatusCode.InternalServerError, e.Message);
         }
-        
+    }
+
+    [HttpGet]
+    [Route("getUsers")]
+    public IActionResult GetUsers()
+    {
+        try
+        {
+            var result = _user.GetAllUsers();
+            return Ok(result.Result);
+        }
+        catch (Exception e)
+        {
+            return StatusCode((int) HttpStatusCode.InternalServerError, e.Message);
+        }
     }
 }

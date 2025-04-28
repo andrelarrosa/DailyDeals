@@ -2,6 +2,7 @@
 using DailyDeals.Gateway;
 using DailyDeals.Infra;
 using DailyDeals.Mapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace DailyDeals.Service;
 
@@ -16,17 +17,28 @@ public class UserService : IUser
         _userMapper = userMapper;
     }
     
-    public void createUser(UserDto userDto)
+    public async Task CreateUser(UserDto userDto)
     {
+        var transaction = await _context.Database.BeginTransactionAsync();
+        
+        var user = _userMapper.toDatabase(userDto);
+        await _context.Users.AddAsync(user);
+        await _context.SaveChangesAsync();
+        
+        await transaction.CommitAsync();
+    }
+
+    public async Task<List<UserDto>> GetAllUsers()
+    {
+        
         try
         {
-            var user = _userMapper.toDatabase(userDto);
-            _context.Users.Add(user);
-            _context.SaveChangesAsync();
+            var users = await _context.Users.ToListAsync();
+            return users.Select(user => _userMapper.toDto(user)).ToList();
         }
         catch (Exception ex)
         {
-            throw ex;
+            throw;
         }
     }
 }
