@@ -1,19 +1,35 @@
-﻿using DailyDeals.Dto;
+﻿using System.Net;
+using DailyDeals.Dto;
 using DailyDeals.Gateway;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace DailyDeals.Controller;
 
 [Route("api/")]
 [ApiController]
-public class UserController
+public class UserController : ControllerBase
 {
     private readonly IUser _user;
     
+    public UserController(IUser user)
+    {
+        _user = user;
+    }
+    
     [HttpPost]
     [Route("create")]
-    public void CreateUser([FromBody]UserDto userDto)
+    public IActionResult CreateUser([FromBody]UserDto userDto)
     {
-        _user.createUser(userDto);    
+        try
+        {
+            _user.createUser(userDto);
+            return Ok("User created successfully");
+        }
+        catch (Exception e)
+        {
+            return StatusCode((int) HttpStatusCode.InternalServerError, e.Message);
+        }
+        
     }
 }
