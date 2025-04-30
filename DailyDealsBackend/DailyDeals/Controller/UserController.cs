@@ -46,4 +46,35 @@ public class UserController : ControllerBase
             return StatusCode((int) HttpStatusCode.InternalServerError, e.Message);
         }
     }
+
+    [HttpPut]
+    [Route("update")]
+    public IActionResult UpdateUser([FromBody] UserDto userDto, [FromQuery] int id)
+    {
+        try
+        {
+            var result = _user.UpdateUser(userDto, id);
+            return Ok("User updated successfully with id: " + result.Id);
+        }
+        catch (Exception e)
+        {
+            return StatusCode((int) HttpStatusCode.InternalServerError, e.Message);
+        }
+    }
+
+    [HttpDelete]
+    [Route("delete")]
+    public IActionResult DeleteUser([FromQuery] int id)
+    {
+        try
+        {
+            var result = _user.DeleteUser(id);
+            return Ok("User deleted successfully");
+        }
+        catch (Exception e)
+        {
+            return StatusCode((int) HttpStatusCode.InternalServerError, e.Message);
+        }
+        
+    }
 }
