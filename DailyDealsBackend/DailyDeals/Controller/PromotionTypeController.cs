@@ -3,42 +3,43 @@ using DailyDeals.Dto;
 using DailyDeals.Gateway;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace DailyDeals.Controller;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController : ControllerBase
+public class PromotionTypeController : ControllerBase
 {
-    private readonly IUser _user;
-    
-    public UserController(IUser user)
+    private readonly IPromotionType _promotionType;
+
+    public PromotionTypeController(IPromotionType promotionType)
     {
-        _user = user;
+        _promotionType = promotionType;
     }
     
     [HttpPost]
     [Route("create")]
-    public IActionResult CreateUser([FromBody]UserDto userDto)
+    public IActionResult CreatePromotionType([FromBody]PromotionTypeDto promotionTypeDto)
     {
         try
         {
-            _user.CreateUser(userDto);
-            return Ok("User created successfully");
+            _promotionType.CreatePromotionType(promotionTypeDto);
+            return Ok("Promotion Type created");
+
         }
         catch (Exception e)
         {
             return StatusCode((int) HttpStatusCode.InternalServerError, e.Message);
         }
     }
-
+    
+    
     [HttpGet]
-    [Route("getUsers")]
-    public IActionResult GetUsers()
+    [Route("getPromotionsTypes")]
+    public IActionResult GetPromotionsTypes()
     {
         try
         {
-            var result = _user.GetAllUsers();
+            var result = _promotionType.GetAllPromotionsTypes();
             return Ok(result.Result);
         }
         catch (Exception e)
@@ -49,11 +50,11 @@ public class UserController : ControllerBase
 
     [HttpPut]
     [Route("update")]
-    public IActionResult UpdateUser([FromBody] UserDto userDto, [FromQuery] int id)
+    public IActionResult UpdatePromotionType([FromBody] PromotionTypeDto promotionTypeDto, [FromQuery] int id)
     {
         try
         {
-            var result = _user.UpdateUser(userDto, id);
+            var result = _promotionType.UpdatePromotionType(promotionTypeDto, id);
             return Ok("User updated successfully with id: " + result.Id);
         }
         catch (Exception e)
@@ -64,11 +65,11 @@ public class UserController : ControllerBase
 
     [HttpDelete]
     [Route("delete")]
-    public IActionResult DeleteUser([FromQuery] int id)
+    public IActionResult DeletePromotionType([FromQuery] int id)
     {
         try
         {
-            var result = _user.DeleteUser(id);
+            var result = _promotionType.DeletePromotionType(id);
             return Ok("User deleted successfully");
         }
         catch (Exception e)

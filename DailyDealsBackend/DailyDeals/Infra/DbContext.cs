@@ -9,6 +9,7 @@ public class DbContextFac : DbContext
     }
     
     public DbSet<User> Users { get; set; }
+    public DbSet<PromotionType> PromotionTypes { get; set; }
 }
 
 public class User
@@ -18,5 +19,10 @@ public class User
     public string Email { get; set; }
     public string Password { get; set; }
     public string Cpf { get; set; }
+}
 
+public class PromotionType
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
 }

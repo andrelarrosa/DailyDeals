@@ -41,6 +41,11 @@ public class UserService : IUser
     public async Task UpdateUser(UserDto userDto, int id)
     {
         var user = _context.Users.FirstOrDefault((x) => x.Id == id);
+
+        if (user == null)
+        {
+            throw new Exception($"User with id: {id} not found");
+        }
         
         user.Name = userDto.Name;
         user.Password = userDto.Password;
