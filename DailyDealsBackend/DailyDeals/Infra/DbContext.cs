@@ -10,8 +10,9 @@ public class DbContextFac : DbContext
     
     public DbSet<User> Users { get; set; }
     public DbSet<PromotionType> PromotionTypes { get; set; }
-    
     public DbSet<Promotion> Promotions { get; set; }
+    public DbSet<PromotionRating> PromotionRatings { get; set; }
+    
 }
 
 public class User
@@ -35,4 +36,12 @@ public class Promotion
     public string Link { get; set; }
     public User User { get; set; }
     public PromotionType PromotionType { get; set; }
+}
+
+public class PromotionRating
+{
+    public int Id { get; set; }
+    public User User { get; set; }
+    public Promotion Promotion { get; set; }
+    public int Score { get; set; }
 }
