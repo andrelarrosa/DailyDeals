@@ -11,11 +11,13 @@ public class PromotionService : IPromotion
 {
     private readonly DbContextFac _context;
     private readonly PromotionMapper _mapper;
+    private readonly PromotionValidator _validator;
 
-    public PromotionService(DbContextFac context, PromotionMapper mapper)
+    public PromotionService(DbContextFac context, PromotionMapper mapper, PromotionValidator validator)
     {
         _context = context;
         _mapper = mapper;
+        _validator = validator;
     }
     
     public async Task CreatePromotion(PromotionDto promotionDto)
@@ -45,6 +47,8 @@ public class PromotionService : IPromotion
     {
         try
         {
+            _validator.Validate(id, promotionDto.UserId, promotionDto.PromotionTypeId);
+            
             var promotion = _context.Promotions
                 .Include(p => p.User)
                 .Include(p => p.PromotionType)
@@ -64,7 +68,7 @@ public class PromotionService : IPromotion
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            throw;
+            throw new Exception(ex.Message);
         }
         
     }
