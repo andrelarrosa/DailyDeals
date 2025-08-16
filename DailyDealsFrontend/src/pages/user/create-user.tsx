@@ -4,12 +4,18 @@ import {
   Button,
   Input,
   Heading,
-  VStack,
   FieldsetRoot,
   FieldsetLegend,
   FieldsetErrorText,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
+
+const apiUrl = import.meta.env.VITE_API_URL;
+
+const getUsers = async () => {
+  const response = await fetch(`${apiUrl}/Users/getUsers`);
+  console.log(response)
+}
 
 const UserRegistrationForm = () => {
   const {
@@ -21,6 +27,7 @@ const UserRegistrationForm = () => {
 
   const onSubmit = () => {
     // Aqui você pode fazer a chamada para a API
+    console.log("enviando para a api")
     reset();
   };
 
@@ -29,7 +36,7 @@ const UserRegistrationForm = () => {
       <Heading size="lg" mb={6} textAlign="center">
         Cadastro de Usuário
       </Heading>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(getUsers)}>
           <FieldsetRoot>
             <FieldsetLegend>Nome</FieldsetLegend>
             <Input
